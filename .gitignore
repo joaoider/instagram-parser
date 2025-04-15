@@ -1,0 +1,17 @@
+# Segurança
+api_key.txt
+
+# Python cache
+__pycache__/
+*.pyc
+
+# VS Code
+.vscode/
+
+# Ambientes virtuais
+.venv/
+env/
+
+# Arquivos de resultado
+resultado_*.json
+resultado_*.csv

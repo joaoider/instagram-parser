@@ -1,0 +1,91 @@
+FUNCIONAMENTO GERAL DA API
+📌 Endpoint principal:
+https://parser.im/api.php
+Todas as requisições são feitas para esse endpoint, variando o parâmetro mode.
+
+🧩 Modo principal (mode=create):
+Cria uma tarefa de coleta de dados com várias opções de configuração.
+
+🚀 COMO FUNCIONA A CRIAÇÃO DE UMA TAREFA
+Exemplo de URL:
+https://parser.im/api.php?key=$key&mode=create&type=p2&act=2&name=$name&links=$links&collect_source=1&spec=1,2&dop=3,15&limit=1000
+Parâmetros importantes:
+Parâmetro	Obrigatório	Descrição
+key	✅	Sua chave de API, que autentica a requisição.
+mode	✅	Ação que deseja fazer. Neste caso: create (criar tarefa).
+type	✅	Tipo de tarefa. p2 provavelmente significa coleta de perfis/posts.
+act	✅	Valor fixo 2, obrigatório para criação de tarefa.
+name	❌	Nome descritivo da tarefa.
+links	✅	Lista de links de perfis ou posts separados por vírgula.
+collect_source	❌	Se presente, inclui a origem dos dados na resposta.
+spec	❌	Especifica os dados principais a coletar: 1 = ID, 2 = login, 1,2 = ambos.
+dop	❌	Coleta de dados adicionais: 3 = nome, 13 = privacidade, 15 = verificado, 17 = avatar.
+limit	❌	Limite de contas a serem processadas (padrão muito alto).
+limit2	❌	Limite por conta (padrão 0 = ilimitado).
+unique	❌	1 = remove duplicatas, 0 = permite duplicatas.
+posts_limit	❌	Limite de posts por conta.
+postdate	❌	Restringe a coleta a posts de uma data ou faixa de dias atrás.
+private	❌	Filtra contas por privacidade: 1 abertas, 2 fechadas, 0 qualquer.
+ava	❌	Filtra por presença de avatar: 1 tem, 2 não tem, 0 qualquer.
+verified	❌	Conta verificada? 1 sim, 2 não, 0 qualquer.
+white_login	❌	Palavras obrigatórias no login.
+stop_login	❌	Palavras proibidas no login.
+
+✅ Resposta esperada:
+Se sucesso:
+{"status":"ok","tid":"123456"}
+Se erro:
+{"status":"error","text":"Descrição do erro"}
+
+📊 VERIFICANDO O STATUS DA TAREFA
+https://parser.im/api.php?key=$key&mode=status&tid=$tid
+Retorna detalhes da tarefa (tipo, quantidade coletada, status, horários etc).
+
+📥 OBTENDO RESULTADOS
+https://parser.im/api.php?key=$key&mode=result&tid=$tid
+Retorna os dados coletados da tarefa.
+
+🗑️ DELETAR OU FINALIZAR TAREFAS
+Excluir tarefa:
+https://parser.im/api.php?key=$key&mode=delete&tid=$tid
+Finalizar manualmente:
+https://parser.im/api.php?key=$key&mode=finish&tid=$tid
+
+🔍 INFORMAÇÕES DE USUÁRIO (Instagram)
+https://parser.im/api.php?key=$key&mode=info&user=$user
+Retorna dados do usuário (nome, login, id, avatar etc).
+
+Resposta:
+{"status":"ok","user":{...}}
+
+🌍 LISTA DE PAÍSES DISPONÍVEIS (PARA FILTROS)
+https://parser.im/api.php?key=$key&mode=countries
+Retorna uma lista de países suportados para filtros de contas.
+
+
+💡 RESUMO PRÁTICO DO FLUXO
+Criar tarefa de coleta → mode=create
+Aguardar execução ou consultar status → mode=status
+Pegar resultados → mode=result
+(Opcional) finalizar ou excluir → mode=finish ou mode=delete
+
+
+type: 
+p1: collection from accounts
+p2: collection from posts
+p3 - collection from hashtags
+p4 - collection from locations
+p5 - collection by keywords
+p6 - collection from mentions
+m1 - account monitoring
+m2 - post monitoring
+m3 - hashtag monitoring
+m4 - location monitoring
+f1 - filter accounts
+
+act:
+2 - likes
+3 - comments
+6 - posts
+10 - likes on comments
+12 - co-authors
